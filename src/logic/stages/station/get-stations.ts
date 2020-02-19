@@ -9,7 +9,7 @@ export function getStations(): Station[] {
       price: 3,
       name: 'Oil Station 1',
       resource: ResourceEnum.OIL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 1
     },
     {
@@ -18,7 +18,7 @@ export function getStations(): Station[] {
       price: 4,
       name: 'Carbon Station 1',
       resource: ResourceEnum.COAL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 1
     },
     {
@@ -27,7 +27,7 @@ export function getStations(): Station[] {
       price: 5,
       name: 'Trash Station 1',
       resource: ResourceEnum.TRASH,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 1
     },
     {
@@ -36,7 +36,7 @@ export function getStations(): Station[] {
       price: 7,
       name: 'OIL Station 2',
       resource: ResourceEnum.OIL,
-      quantity: 3,
+      resourceConsumption: 3,
       efficiency: 2
     },
     {
@@ -45,7 +45,7 @@ export function getStations(): Station[] {
       price: 8,
       name: 'Carbon Station 2',
       resource: ResourceEnum.COAL,
-      quantity: 3,
+      resourceConsumption: 3,
       efficiency: 2
     },
     {
@@ -54,7 +54,7 @@ export function getStations(): Station[] {
       price: 9,
       name: 'Trash Station 2',
       resource: ResourceEnum.TRASH,
-      quantity: 3,
+      resourceConsumption: 3,
       efficiency: 2
     },
     {
@@ -63,7 +63,7 @@ export function getStations(): Station[] {
       price: 11,
       name: 'Carbon Station 2',
       resource: ResourceEnum.COAL,
-      quantity: 1,
+      resourceConsumption: 1,
       efficiency: 1
     },
     {
@@ -72,7 +72,7 @@ export function getStations(): Station[] {
       price: 15,
       name: 'Carbon Station 2 gt',
       resource: ResourceEnum.COAL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 2
     },
     {
@@ -81,7 +81,7 @@ export function getStations(): Station[] {
       price: 12,
       name: 'Oil Station 3',
       resource: ResourceEnum.OIL,
-      quantity: 1,
+      resourceConsumption: 1,
       efficiency: 1
     },
     {
@@ -90,7 +90,7 @@ export function getStations(): Station[] {
       price: 16,
       name: 'Oil Station 3 gt',
       resource: ResourceEnum.OIL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 2
     },
     {
@@ -99,7 +99,7 @@ export function getStations(): Station[] {
       price: 13,
       name: 'Trash Station 3',
       resource: ResourceEnum.TRASH,
-      quantity: 1,
+      resourceConsumption: 1,
       efficiency: 1
     },
     {
@@ -108,7 +108,7 @@ export function getStations(): Station[] {
       price: 17,
       name: 'Trash Station 3',
       resource: ResourceEnum.TRASH,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 2
     },
     {
@@ -117,7 +117,7 @@ export function getStations(): Station[] {
       price: 20,
       name: 'Wind Station 3',
       resource: ResourceEnum.RENEWABLE,
-      quantity: 0,
+      resourceConsumption: 0,
       efficiency: 1
     }
   ];

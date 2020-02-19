@@ -1,8 +1,5 @@
-import { Player } from "./player/player";
-
-export class House {
+export interface House {
   id: number;
   axisX: number;
   axisY: number;
-  player: Player; 
 }

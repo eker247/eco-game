@@ -1,4 +1,4 @@
-export class StationStageError {
+export class StationError {
   static PLAYERS_ALREADY_EXIST(players: any): Error {
     return new Error(`Players already exist: ${players}`);
   }
@@ -16,17 +16,6 @@ export class StationStageError {
   }
   static STATION_ALREADY_SET(station: any): Error {
     return new Error(`Station is already set: ${station}`);
-  }
-  static PRICE_INCORRECT(price: any): Error {
-    return new Error(`Incorrect price: ${price}`);
-  }
-  static PRICE_TOO_LOW(price: number, actualPrice: number): Error {
-    return new Error(
-      `Given price is lower than actual: ${price} <= ${actualPrice}`
-    );
-  }
-  static PRICE_NO_ENOUGH(price: any): Error {
-    return new Error(`User has not enough cash: ${price}`);
   }
   static NO_ACTUAL_STATION(): Error {
     return new Error(`Actual station is not set`);

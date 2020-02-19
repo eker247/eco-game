@@ -66,7 +66,7 @@ describe('Player.spec.ts', () => {
       price: 3,
       name: 'Oil Station 1',
       resource: ResourceEnum.OIL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 1
     } as Station;
 
@@ -93,7 +93,7 @@ describe('Player.spec.ts', () => {
       price: 3,
       name: 'Oil Station 1',
       resource: ResourceEnum.OIL,
-      quantity: 2,
+      resourceConsumption: 2,
       efficiency: 1
     } as Station;
 
@@ -113,7 +113,7 @@ describe('Player.spec.ts', () => {
         price: 3,
         name: 'Oil Station 1',
         resource: ResourceEnum.OIL,
-        quantity: 2,
+        resourceConsumption: 2,
         efficiency: 1
       } as Station;
       player.stations.push(station);
@@ -128,7 +128,7 @@ describe('Player.spec.ts', () => {
       id: 1,
       axisX: 3,
       axisY: 4,
-      player: player, 
+      player: player,
     } as House;
 
     it('should add a house', () => {
@@ -136,7 +136,7 @@ describe('Player.spec.ts', () => {
       expect(player.houses.length).toEqual(1);
       expect(player.houses[0]).toEqual(house);
     });
-    
+
     it('should throw an error', () => {
       expect(() => player.addHouse(null)).toThrow(
         PlayerError.HOUSE_INCORRECT(null)

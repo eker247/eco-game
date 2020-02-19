@@ -1,24 +1,22 @@
-import { Player } from "./logic/player/player";
-import { StationStage } from "./logic/stages/station/station.stage";
-import { Resource } from "./logic/stages/resource/resource";
-import { ResourceEnum } from "./logic/stages/resource/resource.enum";
-import { ResourceService } from "./logic/stages/resource/resource.service";
+import { PlayerService, Player } from "./logic/player";
+import { SharedError } from "./logic/shared";
+import { StationStage } from "./logic/stages/station";
 
-const players: Player[] = [
-  new Player(1, 'Adin'),
-  new Player(2, 'Dwa'),
-  new Player(3, 'Tri'),
-];
+// PlayerService.setPlayers();
+// while (!PlayerService.isGameOver()) {
+// let players = PlayerService.getPlayersAscending();
+//   const stationStage = new StationStage(players);
+//   while (players) {
+//     const player = stationStage.getCurrentPlayer();
+//     const currentStations = stationStage.getStationsToBuy();
+//     const nextStations = stationStage.getNextStations();
+//     stationStage.setActualStation(currentStations[0], player, currentStations[0].price);
+//     stationStage.playersAbleToBuy.forEach(currentPlayer => {
+//       stationStage.outbidAuction(currentPlayer, stationStage.actualPrice + 1);
+//     });
+//   }
+// }
+const shared = new StationStage();
 
-const coal: Resource = {
-  name: ResourceEnum.COAL,
-  availableItems: 25, 
-  startPrice: 10,
-  perPrice: 3,
-};
-
-const player = players[0];
-
-new ResourceService();
-
-console.log(player);
+let players = PlayerService.getPlayersAscending();
+console.log('Players:', players);

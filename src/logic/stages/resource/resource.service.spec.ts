@@ -4,7 +4,7 @@ import { getResources } from './get-resources';
 
 describe('resource.service.spec', () => {
   beforeEach(() => {
-    ResourceService.resources = getResources();
+    ResourceService.resRepo = getResources();
   });
 
   describe('getPrice', () => {

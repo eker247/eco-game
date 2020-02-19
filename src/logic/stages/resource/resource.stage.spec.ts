@@ -1,223 +1,77 @@
-// import { Player } from '../../player/player';
-// import { Station } from './station';
-// import { StationService } from './station.service';
-// import { StationStage } from './station.stage';
+import { Player } from '../../player/player';
+import { getStations } from '../station/get-stations';
+import { Station } from '../station/station';
+import { ResourceEnum } from './resource.enum';
+import { ResourceStage } from './resource.stage';
 
 describe('resource.stage.spec.ts', () => {
-//   let players: Player[];
-//   let stage: StationStage;
+  let resourceStage: ResourceStage;
+  let players: Player[];
+  let stations: Station[];
 
-//   beforeEach(() => {
-//     players = [
-//       new Player(1, 'One', 100),
-//       new Player(2, 'Two', 100),
-//       new Player(3, 'Three', 100),
-//       new Player(4, 'Four', 100)
-//     ];
-//     stage = new StationStage(players);
-//   });
+  beforeEach(() => {
+    stations = getStations();
+    players = [
+      new Player(1, 'One', 10),
+      new Player(2, 'Two', 50),
+      new Player(3, 'Three', 30),
+      new Player(4, 'Four', 40)
+    ];
+    players[0].stations.push(stations[0]);
+    players[1].stations.push(stations[1]);
+    players[2].stations.push(stations[2]);
+    players[3].stations.push(stations[3]);
+    resourceStage = new ResourceStage(players);
+  });
 
-//   describe('setPlayersAbleToBuy', () => {
-//     it('should add all players', () => {
-//       expect(stage.playersAbleToBuy.length).toEqual(4);
-//     });
+  it('should create', () => {
+    expect(resourceStage).toBeTruthy();
+  });
 
-//     it('should add some players', () => {
-//       stage.playersAbleToBuy = null;
-//       players[3].cash = 2;
-//       stage.setPlayersAbleToBuy(players);
-//       expect(stage.playersAbleToBuy.length).toEqual(3);
-//     });
+  describe('getPrice', () => {
+    it('should return correct price', () => {
+      expect(resourceStage.getPrice(ResourceEnum.COAL, 1)).toEqual(3);
+    });
+  });
 
-//     it('should throw an error', () => {
-//       expect(() => stage.setPlayersAbleToBuy(players)).toThrow();
-//     });
-//   });
+  describe('buyResource', () => {
+    it('player 0 should buy 1 coal', () => {
+      resourceStage.buyResource(players[0], ResourceEnum.COAL, 1);
+      expect(players[0].resources[ResourceEnum.COAL]).toEqual(1);
+    });
 
-//   describe('getMostExpensiveStationPrice', () => {
-//     it('should find the most expensive station', () => {
-//       const stations = [
-//         { price: 10 },
-//         { price: 4 },
-//         { price: 26 },
-//         { price: 14 }
-//       ] as Station[];
-//       const price = stage.getMostExpensiveStationPrice(stations);
-//       expect(price).toEqual(26);
-//     });
+    it('player 1 should buy 3 coals', () => {
+      resourceStage.buyResource(players[1], ResourceEnum.COAL, 3);
+      expect(players[1].resources[ResourceEnum.COAL]).toEqual(3);
+    });
 
-//     it('should throw an error', () => {
-//       expect(() => stage.getMostExpensiveStationPrice(null)).toThrow();
-//     });
-//   });
+    it('should throw an error', () => {
+      expect(() =>
+        resourceStage.buyResource(players[2], ResourceEnum.TRASH, 5)
+      ).toThrow();
+      expect(() =>
+        resourceStage.buyResource(null, ResourceEnum.TRASH, 5)
+      ).toThrow();
+      expect(() => resourceStage.buyResource(players[2], null, 1)).toThrow();
+      expect(() =>
+        resourceStage.buyResource(players[2], ResourceEnum.TRASH, null)
+      ).toThrow();
+    });
+  });
 
-//   describe('getCurrentPlayer', () => {
-//     it('should return the player', () => {
-//       stage.playersAbleToBuy = players;
-//       const player = stage.getCurrentPlayer();
-//       expect(player).toBeTruthy();
-//       expect(player).toEqual(players[0]);
-//     });
+  it('should set 4 players', () => {
+    expect(resourceStage.playersAbleToBuy.length).toEqual(4);
+  });
 
-//     it('should throw an error', () => {
-//       stage.playersAbleToBuy = [];
-//       expect(() => stage.getCurrentPlayer()).toThrow();
-//     });
-//   });
+  describe('setPlayersAbleToBuy', () => {
+    it('should set 4 players', () => {
+      expect(resourceStage.playersAbleToBuy.length).toEqual(4);
+    });
 
-//   describe('getStationsToBuy', () => {
-//     it('should return stations', () => {
-//       spyOn(StationService, 'getCurrentStations').and.returnValue([
-//         { name: 'coal' } as Station
-//       ]);
-//       const stations = stage.getStationsToBuy();
-//       expect(stations.length).toEqual(1);
-//     });
-//   });
+    it('should set 3 players', () => {
+      players[0].cash = 100;
+      expect(resourceStage.playersAbleToBuy.length).toEqual(3);
+    });
 
-//   describe('getNextStations', () => {
-//     it('should return stations', () => {
-//       spyOn(StationService, 'getNextStations').and.returnValue([
-//         { name: 'coal' } as Station
-//       ]);
-//       const stations = stage.getNextStations();
-//       expect(stations.length).toEqual(1);
-//     });
-//   });
-
-//   describe('setActualStation', () => {
-//     const station = { id: 4, price: 10 } as Station;
-//     const player = { name: 'testPlayer', cash: 20 } as Player;
-
-//     it('should set actual station', () => {
-//       stage.setActualStation(station, player);
-//       expect(stage.actualStation).toEqual(station);
-//       expect(stage.playerWithHighestWage).toEqual(player);
-//       expect(stage.actualPrice).toEqual(station.price);
-//     });
-
-//     it('should set custom price', () => {
-//       stage.setActualStation(station, player, 20);
-//       expect(stage.actualPrice).toEqual(20);
-//     });
-
-//     it('should throw an error (user already added)', () => {
-//       stage.setActualStation(station, player);
-//       expect(() => stage.setActualStation(station, player)).toThrow();
-//     });
-
-//     it('should throw an error (wrong parameters)', () => {
-//       expect(() => stage.setActualStation(station, player, 100)).toThrow();
-//       expect(() => stage.setActualStation(station, player, 2)).toThrow();
-//       expect(() => stage.setActualStation(station, null)).toThrow();
-//       expect(() => stage.setActualStation(null, player)).toThrow();
-//     });
-//   });
-
-//   describe('outbidAuction', () => {
-//     beforeEach(() => {
-//       const station = { id: 4, price: 10 } as Station;
-//       const player = { id: 1, name: 'playerOne', cash: 20 } as Player;
-//       stage.setActualStation(station, player);
-//     });
-
-//     it('should outbid current price', () => {
-//       const player = { id: 2, name: 'playerTwo', cash: 30 } as Player;
-//       stage.outbidAuction(player, 11);
-//       expect(stage.actualPrice).toEqual(11);
-//       expect(stage.playerWithHighestWage).toEqual(player);
-//     });
-
-//     it('should throw an error', () => {
-//       expect(() =>
-//         stage.outbidAuction(
-//           { id: 2, name: 'playerThree', cash: 30 } as Player,
-//           10
-//         )
-//       ).toThrow();
-//       expect(() =>
-//         stage.outbidAuction(
-//           { id: 2, name: 'playerFour', cash: 30 } as Player,
-//           9
-//         )
-//       ).toThrow();
-//       expect(() =>
-//         stage.outbidAuction(
-//           { id: 2, name: 'playerThree', cash: 10 } as Player,
-//           11
-//         )
-//       ).toThrow();
-//     });
-//   });
-
-//   describe('buyStation', () => {
-//     let station: Station;
-//     let player: Player;
-
-//     beforeEach(() => {
-//       stage = new StationStage(players);
-//       player = stage.playersAbleToBuy[0];
-//       player.cash = 15;
-//       station = Object.assign(new Station(), { id: 4, price: 10 });
-//       stage.setActualStation(station, player);
-//       stage.buyStation();
-//     });
-
-//     it('should update player', () => {
-//       expect(player.stations.length).toEqual(1);
-//       expect(player.cash).toEqual(5);
-//     });
-
-//     it('should update stage properties', () => {
-//       expect(stage.actualStation).toBeNull();
-//       expect(stage.playerWithHighestWage).toBeNull();
-//       expect(stage.playersAbleToBuy.length).toEqual(3);
-//     });
-//   });
-
-//   describe('removePlayerAbleToBuy', () => {
-//     it('should remove player from array', () => {
-//       const lengthBeforeRemove = stage.playersAbleToBuy.length;
-//       stage.removePlayerAbleToBuy(stage.playersAbleToBuy[0]);
-//       expect(stage.playersAbleToBuy.length).toEqual(lengthBeforeRemove - 1);
-//     });
-
-//     it('should throw an error', () => {
-//       expect(() => stage.removePlayerAbleToBuy(null)).toThrow();
-//     });
-//   });
-
-//   describe('removeStation', () => {
-//     beforeEach(() => {
-//       const station = { id: 4, price: 10 } as Station;
-//       const player = players[0];
-//       stage = new StationStage(players);
-//       stage.setActualStation(station, player, 15);
-//       spyOn(StationService, 'removeStation');
-//       stage.removeStation();
-//     });
-
-//     it('should set stage properties', () => {
-//       expect(stage.actualStation).toBeNull();
-//       expect(stage.actualPrice).toEqual(0);
-//     });
-
-//     it('should throw an error', () => {
-//       expect(() => {
-//         stage.removeStation();
-//       }).toThrow();
-//     });
-//   });
-
-//   describe('isStageFinished', () => {
-//     it('should return false', () => {
-//       stage.playersAbleToBuy = players;
-//       expect(stage.isStageFinished()).toBeFalsy();
-//     });
-
-//     it('should return true', () => {
-//       stage.playersAbleToBuy = [];
-//       expect(stage.isStageFinished()).toBeTruthy();
-//     });
-//   });
+  });
 });

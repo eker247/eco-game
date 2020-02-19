@@ -1,7 +1,9 @@
-import { Player } from '../../player/player';
+// import { Player } from '../../player/player';
 import { Station } from './station';
 import { StationService } from './station.service';
-import { StationStageError } from './station.stage.error';
+import { StationError } from './station.error';
+import { Player } from 'src/logic/player';
+import { SharedError } from 'src/logic/shared';
 
 export class StationStage {
   actualPrice: number;
@@ -16,7 +18,7 @@ export class StationStage {
 
   setPlayersAbleToBuy(players: Player[]): void {
     if (this.playersAbleToBuy) {
-      throw StationStageError.PLAYERS_ALREADY_EXIST(this.playersAbleToBuy);
+      throw StationError.PLAYERS_ALREADY_EXIST(this.playersAbleToBuy);
     }
     const lowestStationPrice = StationService.getCheapestStationPrice();
 
@@ -34,7 +36,7 @@ export class StationStage {
 
   getMostExpensiveStationPrice(stations: Station[]): number {
     if (!stations) {
-      throw StationStageError.STATIONS_INCORRECT(stations);
+      throw StationError.STATIONS_INCORRECT(stations);
     }
     let price = 0;
     stations.forEach(station => {
@@ -62,20 +64,20 @@ export class StationStage {
 
   setActualStation(station: Station, player: Player, price: number = 0): void {
     if (!station) {
-      throw StationStageError.STATION_INCORRECT(station);
+      throw StationError.STATION_INCORRECT(station);
     } else if (this.actualStation) {
-      throw StationStageError.STATION_ALREADY_SET(this.actualStation);
+      throw StationError.STATION_ALREADY_SET(this.actualStation);
     } else if (!player) {
-      throw StationStageError.PLAYER_INCORRECT(player);
+      throw StationError.PLAYER_INCORRECT(player);
     } else if (
       this.playerWithHighestWage &&
       this.playerWithHighestWage.id === player.id
     ) {
-      throw StationStageError.PLAYER_THE_SAME(player);
+      throw StationError.PLAYER_THE_SAME(player);
     } else if (price && price < station.price) {
-      throw StationStageError.PRICE_INCORRECT(price);
+      throw SharedError.PRICE_INCORRECT(price);
     } else if (price > player.cash) {
-      throw StationStageError.PRICE_NO_ENOUGH;
+      throw SharedError.PRICE_NO_ENOUGH;
     }
     this.actualStation = station;
     this.playerWithHighestWage = player;
@@ -84,15 +86,15 @@ export class StationStage {
 
   outbidAuction(player: Player, price: number): void {
     if (!player) {
-      throw StationStageError.PLAYER_INCORRECT(player);
+      throw StationError.PLAYER_INCORRECT(player);
     } else if (!price) {
-      throw StationStageError.PRICE_INCORRECT(price);
+      throw SharedError.PRICE_INCORRECT(price);
     } else if (this.playerWithHighestWage === player) {
-      throw StationStageError.PLAYER_THE_SAME(player);
+      throw StationError.PLAYER_THE_SAME(player);
     } else if (price <= this.actualPrice) {
-      throw StationStageError.PRICE_TOO_LOW(price, this.actualPrice);
+      throw SharedError.PRICE_TOO_LOW(price, this.actualPrice);
     } else if (player.cash < price) {
-      throw StationStageError.PRICE_NO_ENOUGH(price);
+      throw SharedError.PRICE_NO_ENOUGH(price);
     }
     this.actualPrice = price;
     this.playerWithHighestWage = player;
@@ -108,7 +110,7 @@ export class StationStage {
 
   removePlayerAbleToBuy(playerToRemove: Player) {
     if (!playerToRemove) {
-      throw StationStageError.PLAYER_INCORRECT(playerToRemove);
+      throw StationError.PLAYER_INCORRECT(playerToRemove);
     }
     this.playersAbleToBuy = this.playersAbleToBuy.filter(
       player => player.id !== playerToRemove.id
@@ -117,7 +119,7 @@ export class StationStage {
 
   removeStation(): void {
     if (!this.actualStation) {
-      throw StationStageError.NO_ACTUAL_STATION();
+      throw StationError.NO_ACTUAL_STATION();
     }
     StationService.removeStation(this.actualStation.id);
     this.actualStation = null;

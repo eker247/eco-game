@@ -1,8 +1,8 @@
 import { House } from '../house';
 import { SettingService } from '../setting.service';
-import { ResourceBag } from '../stages/resource/resource.enum';
 import { Station } from '../stages/station/station';
 import { PlayerError } from './player.error';
+import { StationError } from '../stages/station';
 
 export class Player {
   id: number;
@@ -37,7 +37,7 @@ export class Player {
 
   addStation(newStation: Station): void {
     if (!newStation) {
-      throw PlayerError.STATION_INCORRECT(newStation);
+      throw StationError.STATION_INCORRECT(newStation);
     } else if (this.stations.some(station => station.id === newStation.id)) {
       throw PlayerError.STATION_ALREADY_ADDED(newStation);
     }
@@ -46,7 +46,7 @@ export class Player {
 
   removeStation(stationToRemove: Station): void {
     if (!stationToRemove) {
-      throw PlayerError.STATION_INCORRECT(stationToRemove);
+      throw StationError.STATION_INCORRECT(stationToRemove);
     } else if (
       !this.stations.some(station => station.id === stationToRemove.id)
     ) {
@@ -65,6 +65,4 @@ export class Player {
     }
     this.houses.push(newHouse);
   }
-
-  
 }

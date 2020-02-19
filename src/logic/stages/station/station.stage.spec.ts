@@ -158,7 +158,7 @@ describe('station.stage.spec.ts', () => {
       stage = new StationStage(players);
       player = stage.playersAbleToBuy[0];
       player.cash = 15;
-      station = Object.assign(new Station(), { id: 4, price: 10 });
+      station = { id: 4, price: 10 } as Station;
       stage.setActualStation(station, player);
       stage.buyStation();
     });

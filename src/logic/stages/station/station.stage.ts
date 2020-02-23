@@ -1,42 +1,30 @@
 // import { Player } from '../../player/player';
+import { Player } from '../../player/index';
+import { PlayerService } from '../../player/player.service';
 import { Station } from './station';
 import { StationService } from './station.service';
-import { StationError } from './station.error';
-import { Player } from 'src/logic/player';
-import { SharedError } from 'src/logic/shared';
 
 export class StationStage {
   actualPrice: number;
   actualStation: Station;
   availableStations: Station[];
-  playersAbleToBuy: Player[];
+  playersAbleToBuy: Player[] = PlayerService.getPlayersDescending();
   playerWithHighestWage: Player;
 
-  constructor(players: Player[] = []) {
-    this.setPlayersAbleToBuy(players);
+  constructor() {
+    this.setPlayersAbleToBuy();
   }
 
-  setPlayersAbleToBuy(players: Player[]): void {
-    if (this.playersAbleToBuy) {
-      throw StationError.PLAYERS_ALREADY_EXIST(this.playersAbleToBuy);
-    }
+  setPlayersAbleToBuy(): void {
     const lowestStationPrice = StationService.getCheapestStationPrice();
-
-    this.playersAbleToBuy = players
-      .filter(player => player.cash >= lowestStationPrice)
-      .sort((p1, p2) => {
-        const housesLengthDif = p1.houses.length - p2.houses.length;
-        return (
-          housesLengthDif ||
-          this.getMostExpensiveStationPrice(p1.stations) -
-            this.getMostExpensiveStationPrice(p2.stations)
-        );
-      });
+    this.playersAbleToBuy = this.playersAbleToBuy.filter(
+      player => player.cash >= lowestStationPrice
+    );
   }
 
   getMostExpensiveStationPrice(stations: Station[]): number {
     if (!stations) {
-      throw StationError.STATIONS_INCORRECT(stations);
+      throw new Error('StatSt.getMostExpensiveStationPrice - Incorrect stations');
     }
     let price = 0;
     stations.forEach(station => {
@@ -64,20 +52,20 @@ export class StationStage {
 
   setActualStation(station: Station, player: Player, price: number = 0): void {
     if (!station) {
-      throw StationError.STATION_INCORRECT(station);
+      throw new Error('StatSt.setActualStation - Station incorrect');
     } else if (this.actualStation) {
-      throw StationError.STATION_ALREADY_SET(this.actualStation);
+      throw new Error('StatSt.setActualStation - Station already set');
     } else if (!player) {
-      throw StationError.PLAYER_INCORRECT(player);
+      throw new Error('StatSt.setActualStation - Player incorrect');
     } else if (
       this.playerWithHighestWage &&
       this.playerWithHighestWage.id === player.id
     ) {
-      throw StationError.PLAYER_THE_SAME(player);
+      throw new Error('StatSt.setActualStation - Player the same');
     } else if (price && price < station.price) {
-      throw SharedError.PRICE_INCORRECT(price);
+      throw new Error('StatSt.setActualStation - Price incorrect');
     } else if (price > player.cash) {
-      throw SharedError.PRICE_NO_ENOUGH;
+      throw new Error('StatSt.setActualStation - No enough cash');
     }
     this.actualStation = station;
     this.playerWithHighestWage = player;
@@ -86,15 +74,15 @@ export class StationStage {
 
   outbidAuction(player: Player, price: number): void {
     if (!player) {
-      throw StationError.PLAYER_INCORRECT(player);
+      throw new Error('StatSt.outbidAuction - Player incorrect');
     } else if (!price) {
-      throw SharedError.PRICE_INCORRECT(price);
+      throw new Error('StatSt.outbidAuction - Price incorrect');
     } else if (this.playerWithHighestWage === player) {
-      throw StationError.PLAYER_THE_SAME(player);
+      throw new Error('StatSt.outbidAuction - Player the same');
     } else if (price <= this.actualPrice) {
-      throw SharedError.PRICE_TOO_LOW(price, this.actualPrice);
+      throw new Error('StatSt.outbidAuction - Price to low');
     } else if (player.cash < price) {
-      throw SharedError.PRICE_NO_ENOUGH(price);
+      throw new Error('StatSt.outbidAuction - Price no enough');
     }
     this.actualPrice = price;
     this.playerWithHighestWage = player;
@@ -110,7 +98,7 @@ export class StationStage {
 
   removePlayerAbleToBuy(playerToRemove: Player) {
     if (!playerToRemove) {
-      throw StationError.PLAYER_INCORRECT(playerToRemove);
+      throw new Error('StatSt.removePlayerAbleToBuy - Player incorrect');
     }
     this.playersAbleToBuy = this.playersAbleToBuy.filter(
       player => player.id !== playerToRemove.id
@@ -119,7 +107,7 @@ export class StationStage {
 
   removeStation(): void {
     if (!this.actualStation) {
-      throw StationError.NO_ACTUAL_STATION();
+      throw new Error('StatSt.removeStations - No actual station');
     }
     StationService.removeStation(this.actualStation.id);
     this.actualStation = null;

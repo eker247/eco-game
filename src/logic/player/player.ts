@@ -1,8 +1,6 @@
-import { House } from '../house';
+import { House } from '../stages/house/house';
 import { SettingService } from '../setting.service';
 import { Station } from '../stages/station/station';
-import { PlayerError } from './player.error';
-import { StationError } from '../stages/station';
 
 export class Player {
   id: number;
@@ -20,16 +18,16 @@ export class Player {
 
   earn(cash: number): void {
     if (!cash || typeof cash !== 'number' || cash < 1) {
-      throw PlayerError.CASH_INCORRECT_VALUE(cash);
+      throw new Error('Player.earn - Incorrect value');
     }
     this.cash += cash;
   }
 
   spend(cash: number): void {
     if (!cash || typeof cash !== 'number' || cash < 1) {
-      throw PlayerError.CASH_INCORRECT_VALUE(cash);
+      throw new Error('Player.spend - Incorrect value');
     } else if (cash > this.cash) {
-      throw PlayerError.CASH_NO_ENOUGH(cash, this.cash);
+      throw new Error('Player.spend - No enough cash');
     } else {
       this.cash -= cash;
     }
@@ -37,20 +35,20 @@ export class Player {
 
   addStation(newStation: Station): void {
     if (!newStation) {
-      throw StationError.STATION_INCORRECT(newStation);
+      throw new Error(`Player.addStation - Adding station is incorrect ${newStation}`);
     } else if (this.stations.some(station => station.id === newStation.id)) {
-      throw PlayerError.STATION_ALREADY_ADDED(newStation);
+      throw new Error(`Player.addStation - Player already has station ${newStation}`);
     }
     this.stations.push(newStation);
   }
 
   removeStation(stationToRemove: Station): void {
     if (!stationToRemove) {
-      throw StationError.STATION_INCORRECT(stationToRemove);
+      throw new Error('Player.removeStation - Incorrect station');
     } else if (
       !this.stations.some(station => station.id === stationToRemove.id)
     ) {
-      throw PlayerError.PLAYER_HAS_NOT_STATION(stationToRemove);
+      throw new Error('Player.removeStation - Player has not this station');
     }
     this.stations = this.stations.filter(
       localStation => localStation !== stationToRemove
@@ -59,9 +57,9 @@ export class Player {
 
   addHouse(newHouse: House): void {
     if (!newHouse) {
-      throw PlayerError.HOUSE_INCORRECT(newHouse);
+      throw new Error('Player.addHouse - House incorrect');
     } else if (this.houses.some(house => house.id === newHouse.id)) {
-      throw PlayerError.HOUSE_ALREADY_ADDED(newHouse);
+      throw new Error('Player.addHouse - House already exist');
     }
     this.houses.push(newHouse);
   }

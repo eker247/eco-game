@@ -14,7 +14,8 @@ describe('station.stage.spec.ts', () => {
       new Player(3, 'Three', 100),
       new Player(4, 'Four', 100)
     ];
-    stage = new StationStage(players);
+    stage = new StationStage();
+    stage.playersAbleToBuy = players;
   });
 
   describe('setPlayersAbleToBuy', () => {
@@ -23,14 +24,10 @@ describe('station.stage.spec.ts', () => {
     });
 
     it('should add some players', () => {
-      stage.playersAbleToBuy = null;
+      stage.playersAbleToBuy = players;
       players[3].cash = 2;
-      stage.setPlayersAbleToBuy(players);
+      stage.setPlayersAbleToBuy();
       expect(stage.playersAbleToBuy.length).toEqual(3);
-    });
-
-    it('should throw an error', () => {
-      expect(() => stage.setPlayersAbleToBuy(players)).toThrow();
     });
   });
 
@@ -155,7 +152,8 @@ describe('station.stage.spec.ts', () => {
     let player: Player;
 
     beforeEach(() => {
-      stage = new StationStage(players);
+      stage = new StationStage();
+      stage.playersAbleToBuy = players;
       player = stage.playersAbleToBuy[0];
       player.cash = 15;
       station = { id: 4, price: 10 } as Station;
@@ -191,7 +189,7 @@ describe('station.stage.spec.ts', () => {
     beforeEach(() => {
       const station = { id: 4, price: 10 } as Station;
       const player = players[0];
-      stage = new StationStage(players);
+      stage = new StationStage();
       stage.setActualStation(station, player, 15);
       spyOn(StationService, 'removeStation');
       stage.removeStation();

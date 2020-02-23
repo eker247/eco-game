@@ -3,13 +3,15 @@ import { getStations } from '../station/get-stations';
 import { Station } from '../station/station';
 import { ResourceEnum } from './resource.enum';
 import { ResourceStage } from './resource.stage';
+import { ResourceService } from './resource.service';
+import { PlayerService } from '../../player';
 
 describe('resource.stage.spec.ts', () => {
   let resourceStage: ResourceStage;
   let players: Player[];
   let stations: Station[];
 
-  beforeEach(() => {
+  beforeAll(() => {
     stations = getStations();
     players = [
       new Player(1, 'One', 10),
@@ -21,7 +23,7 @@ describe('resource.stage.spec.ts', () => {
     players[1].stations.push(stations[1]);
     players[2].stations.push(stations[2]);
     players[3].stations.push(stations[3]);
-    resourceStage = new ResourceStage(players);
+    resourceStage = new ResourceStage();
   });
 
   it('should create', () => {
@@ -30,7 +32,8 @@ describe('resource.stage.spec.ts', () => {
 
   describe('getPrice', () => {
     it('should return correct price', () => {
-      expect(resourceStage.getPrice(ResourceEnum.COAL, 1)).toEqual(3);
+      ResourceService.resRepo[ResourceEnum.COAL].availableItems = 25;
+      expect(resourceStage.getPrice(ResourceEnum.COAL, 2)).toEqual(5);
     });
   });
 
@@ -59,19 +62,76 @@ describe('resource.stage.spec.ts', () => {
     });
   });
 
-  it('should set 4 players', () => {
-    expect(resourceStage.playersAbleToBuy.length).toEqual(4);
-  });
-
   describe('setPlayersAbleToBuy', () => {
     it('should set 4 players', () => {
+      PlayerService.setOrder();
+      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
       expect(resourceStage.playersAbleToBuy.length).toEqual(4);
     });
 
     it('should set 3 players', () => {
-      players[0].cash = 100;
+      PlayerService.players[1].cash = 0;
+      resourceStage.setPlayersAbleToBuy()
+      expect(resourceStage.playersAbleToBuy.length).toEqual(3);
+    });
+  });
+
+  describe('getCurrentPlayer', () => {
+    it('should return 1st player', () => {
+      expect(resourceStage.getCurrentPlayer().id).toEqual(1);
+    });
+  });
+
+  describe('removeCurrentPlayer', () => {
+    beforeEach(function() {
+      PlayerService.setOrder();
+      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
+    });
+
+    it('should have 4 players', () => {
+      expect(resourceStage.playersAbleToBuy.length).toEqual(4);
+    });
+
+    it('should have 3 players', () => {
+      resourceStage.removeCurrentPlayer();
       expect(resourceStage.playersAbleToBuy.length).toEqual(3);
     });
 
+    it('should have 1 player', () => {
+      resourceStage.removeCurrentPlayer();
+      resourceStage.removeCurrentPlayer();
+      resourceStage.removeCurrentPlayer();
+      expect(resourceStage.playersAbleToBuy.length).toEqual(1);
+    });
+
+    it('should throw an error', () => {
+      resourceStage.removeCurrentPlayer();
+      resourceStage.removeCurrentPlayer();
+      resourceStage.removeCurrentPlayer();
+      resourceStage.removeCurrentPlayer();
+      expect(() => resourceStage.removeCurrentPlayer()).toThrow();
+    });
+  });
+
+  describe('isStageFinished', () => {
+    beforeAll(function() {
+      PlayerService.setOrder();
+      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
+    });
+
+    it('should should return false', () => {
+      expect(resourceStage.isStageFinished()).toBeFalsy();
+      resourceStage.removeCurrentPlayer();
+      expect(resourceStage.isStageFinished()).toBeFalsy();
+      resourceStage.removeCurrentPlayer();
+      expect(resourceStage.isStageFinished()).toBeFalsy();
+      resourceStage.removeCurrentPlayer();
+      expect(resourceStage.isStageFinished()).toBeFalsy();
+    });
+
+    it('should should return true', () => {
+      resourceStage.removeCurrentPlayer();
+      expect(resourceStage.isStageFinished()).toBeTruthy();
+    });
   });
 });

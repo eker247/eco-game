@@ -1,8 +1,7 @@
 import { ResourceEnum } from '../stages/resource/resource.enum';
 import { Station } from '../stages/station/station';
 import { Player } from './player';
-import { PlayerError } from './player.error';
-import { House } from '../house';
+import { House } from '../stages/house/house';
 
 const PLAYER_NAME = 'adin';
 const DEFAULT_CASH = 200;
@@ -29,13 +28,9 @@ describe('Player.spec.ts', () => {
 
     it('should throw an error', () => {
       const cash = -200;
-      expect(() => player.earn(cash)).toThrow(
-        PlayerError.CASH_INCORRECT_VALUE(cash)
-      );
-      expect(() => player.earn(0)).toThrow(PlayerError.CASH_INCORRECT_VALUE(0));
-      expect(() => player.earn(null)).toThrow(
-        PlayerError.CASH_INCORRECT_VALUE(null)
-      );
+      expect(() => player.earn(cash)).toThrow();
+      expect(() => player.earn(0)).toThrow();
+      expect(() => player.earn(null)).toThrow();
     });
   });
 
@@ -47,15 +42,9 @@ describe('Player.spec.ts', () => {
 
     it('should throw an error', () => {
       const tooMuch = DEFAULT_CASH + 1;
-      expect(() => player.spend(tooMuch)).toThrow(
-        PlayerError.CASH_NO_ENOUGH(tooMuch, player.cash)
-      );
-      expect(() => player.spend(null)).toThrow(
-        PlayerError.CASH_INCORRECT_VALUE(null)
-      );
-      expect(() => player.spend(0)).toThrow(
-        PlayerError.CASH_INCORRECT_VALUE(0)
-      );
+      expect(() => player.spend(tooMuch)).toThrow();
+      expect(() => player.spend(null)).toThrow();
+      expect(() => player.spend(0)).toThrow();
     });
   });
 
@@ -79,10 +68,8 @@ describe('Player.spec.ts', () => {
       expect(() => {
         player.addStation(station);
         player.addStation(station);
-      }).toThrow(PlayerError.STATION_ALREADY_ADDED(station));
-      expect(() => player.addStation(null)).toThrow(
-        PlayerError.STATION_INCORRECT(null)
-      );
+      }).toThrow();
+      expect(() => player.addStation(null)).toThrow();
     });
   });
 
@@ -98,12 +85,8 @@ describe('Player.spec.ts', () => {
     } as Station;
 
     it('should throw an error', () => {
-      expect(() => player.removeStation(null)).toThrow(
-        PlayerError.STATION_INCORRECT(null)
-      );
-      expect(() => player.removeStation(station)).toThrow(
-        PlayerError.PLAYER_HAS_NOT_STATION(station)
-      );
+      expect(() => player.removeStation(null)).toThrow();
+      expect(() => player.removeStation(station)).toThrow();
     });
 
     it('should remove station', () => {
@@ -138,9 +121,7 @@ describe('Player.spec.ts', () => {
     });
 
     it('should throw an error', () => {
-      expect(() => player.addHouse(null)).toThrow(
-        PlayerError.HOUSE_INCORRECT(null)
-      );
+      expect(() => player.addHouse(null)).toThrow();
     });
   });
 });

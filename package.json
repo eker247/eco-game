@@ -19,6 +19,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "rimraf": "^3.0.1"
+    "rimraf": "^3.0.1",
+    "tsc-watch": "^4.1.0"
   }
 }

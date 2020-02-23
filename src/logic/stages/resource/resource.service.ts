@@ -1,20 +1,17 @@
 import { getResources } from './get-resources';
-import { Resource } from './resource';
 import { ResourceEnum, ResourceRepo } from './resource.enum';
-import { ResourceError } from './resource.error';
 
 export class ResourceService {
   static resRepo: ResourceRepo = getResources();
 
   static getPrice(resourceName: ResourceEnum, quantity: number) {
     if (!resourceName || !this.resRepo[resourceName]) {
-      throw ResourceError.RESOURCE_NOT_EXIST(resourceName);
+      throw new Error(`RS.getPrice - resource not exist ${resourceName}`);
     } else if (quantity < 1) {
-      throw ResourceError.NUMBER_INCORRECT(quantity);
+      throw new Error(`RS.getPrice - requested incorrect quantity ${quantity}`);
     } else if (quantity > this.resRepo[resourceName].availableItems) {
-      throw ResourceError.RESOURCE_NO_ENOUGH(
-        quantity,
-        this.resRepo[resourceName].availableItems
+      throw new Error(
+        `RS.getPrice - requested quantity: ${quantity}, available: ${this.resRepo[resourceName].availableItems}`
       );
     }
 
@@ -34,14 +31,11 @@ export class ResourceService {
 
   static getItems(resourceName: ResourceEnum, quantity: number): number {
     if (!resourceName || !this.resRepo[resourceName]) {
-      throw ResourceError.RESOURCE_NOT_EXIST(resourceName);
+      throw new Error('RS.getItems - Resource not exist');
     } else if (quantity < 1) {
-      throw ResourceError.NUMBER_INCORRECT(quantity);
+      throw new Error('RS.getItems - Number incorrect');
     } else if (quantity > this.resRepo[resourceName].availableItems) {
-      throw ResourceError.RESOURCE_NO_ENOUGH(
-        quantity,
-        this.resRepo[resourceName].availableItems
-      );
+      throw new Error('RS.getItems - Resource not exist');
     }
     this.resRepo[resourceName].availableItems -= quantity;
     return quantity;

@@ -1,8 +1,7 @@
 import { ResourceEnum, ResourceRepo } from './resource.enum';
 import { ResourceService } from './resource.service';
-import { PlayerError } from '../../player/player.error';
-import { Player } from 'logic/player/player';
-import { PlayerService } from 'logic/player/player.service';
+import { Player } from '../../player/player';
+import { PlayerService } from '../../player/player.service';
 
 export class ResourceStage {
   resourceRepo: ResourceRepo;
@@ -23,11 +22,11 @@ export class ResourceStage {
     quantity: number
   ): void {
     if (!player) {
-      PlayerError.PLAYER_INCORRECT(player);
+      throw new Error('ResSt.buyResource - Player incorrect');
     }
     const price = this.getPrice(resourceName, quantity);
     if (player.cash < price) {
-      throw PlayerError.CASH_NO_ENOUGH(price, player.cash);
+      throw new Error('ResSt.buyResource - No enough cash');
     }
     player.resources[resourceName]
       ? (player.resources[resourceName] += quantity)
@@ -45,19 +44,21 @@ export class ResourceStage {
     });
   }
 
-  getCurrentPlayer() {
+  getCurrentPlayer(): Player {
     if (this.playersAbleToBuy.length < 1) {
-      throw ;
+      throw new Error('ResSt.getCurrentPlayer - Players not exist');
     }
     return this.playersAbleToBuy[0];
   }
 
-  getResourcesToBuy() {
-    // return ResourceService.getCurrentResources();
+  removeCurrentPlayer(): void {
+    if (!this.playersAbleToBuy.length) {
+      throw new Error('ResSt.removeCurrentPlayer - There is no player');
+    }
+    this.playersAbleToBuy = this.playersAbleToBuy.slice(1);
   }
 
-
-  isStageFinished() {
-    // return (this.playersAbleToBuy || []).length === 0;
+  isStageFinished(): boolean {
+    return !(this.playersAbleToBuy || []).length;
   }
 }

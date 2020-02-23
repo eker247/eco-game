@@ -1,5 +1,3 @@
-import { PlayerService, Player } from "./logic/player";
-import { SharedError } from "./logic/shared";
 import { StationStage } from "./logic/stages/station";
 
 // PlayerService.setPlayers();
@@ -16,7 +14,7 @@ import { StationStage } from "./logic/stages/station";
 //     });
 //   }
 // }
-const shared = new StationStage();
+new StationStage();
 
-let players = PlayerService.getPlayersAscending();
-console.log('Players:', players);
+// let players = PlayerService.getPlayersAscending();
+// console.log('Players:', players);

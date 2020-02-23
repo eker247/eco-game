@@ -15,19 +15,19 @@ describe('station.stage.spec.ts', () => {
       new Player(4, 'Four', 100)
     ];
     stage = new StationStage();
-    stage.playersAbleToBuy = players;
+    stage.stagePlayers = players;
   });
 
-  describe('setPlayersAbleToBuy', () => {
+  describe('setStagePlayers', () => {
     it('should add all players', () => {
-      expect(stage.playersAbleToBuy.length).toEqual(4);
+      expect(stage.stagePlayers.length).toEqual(4);
     });
 
     it('should add some players', () => {
-      stage.playersAbleToBuy = players;
+      stage.stagePlayers = players;
       players[3].cash = 2;
-      stage.setPlayersAbleToBuy();
-      expect(stage.playersAbleToBuy.length).toEqual(3);
+      stage.setStagePlayers();
+      expect(stage.stagePlayers.length).toEqual(3);
     });
   });
 
@@ -50,14 +50,14 @@ describe('station.stage.spec.ts', () => {
 
   describe('getCurrentPlayer', () => {
     it('should return the player', () => {
-      stage.playersAbleToBuy = players;
+      stage.stagePlayers = players;
       const player = stage.getCurrentPlayer();
       expect(player).toBeTruthy();
       expect(player).toEqual(players[0]);
     });
 
     it('should throw an error', () => {
-      stage.playersAbleToBuy = [];
+      stage.stagePlayers = [];
       expect(() => stage.getCurrentPlayer()).toThrow();
     });
   });
@@ -153,8 +153,8 @@ describe('station.stage.spec.ts', () => {
 
     beforeEach(() => {
       stage = new StationStage();
-      stage.playersAbleToBuy = players;
-      player = stage.playersAbleToBuy[0];
+      stage.stagePlayers = players;
+      player = stage.stagePlayers[0];
       player.cash = 15;
       station = { id: 4, price: 10 } as Station;
       stage.setActualStation(station, player);
@@ -169,19 +169,19 @@ describe('station.stage.spec.ts', () => {
     it('should update stage properties', () => {
       expect(stage.actualStation).toBeNull();
       expect(stage.playerWithHighestWage).toBeNull();
-      expect(stage.playersAbleToBuy.length).toEqual(3);
+      expect(stage.stagePlayers.length).toEqual(3);
     });
   });
 
   describe('removePlayerAbleToBuy', () => {
     it('should remove player from array', () => {
-      const lengthBeforeRemove = stage.playersAbleToBuy.length;
-      stage.removePlayerAbleToBuy(stage.playersAbleToBuy[0]);
-      expect(stage.playersAbleToBuy.length).toEqual(lengthBeforeRemove - 1);
+      const lengthBeforeRemove = stage.stagePlayers.length;
+      stage.removeCurrentPlayer(stage.stagePlayers[0]);
+      expect(stage.stagePlayers.length).toEqual(lengthBeforeRemove - 1);
     });
 
     it('should throw an error', () => {
-      expect(() => stage.removePlayerAbleToBuy(null)).toThrow();
+      expect(() => stage.removeCurrentPlayer(null)).toThrow();
     });
   });
 
@@ -209,12 +209,12 @@ describe('station.stage.spec.ts', () => {
 
   describe('isStageFinished', () => {
     it('should return false', () => {
-      stage.playersAbleToBuy = players;
+      stage.stagePlayers = players;
       expect(stage.isStageFinished()).toBeFalsy();
     });
 
     it('should return true', () => {
-      stage.playersAbleToBuy = [];
+      stage.stagePlayers = [];
       expect(stage.isStageFinished()).toBeTruthy();
     });
   });

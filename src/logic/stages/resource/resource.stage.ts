@@ -1,16 +1,11 @@
 import { ResourceEnum, ResourceRepo } from './resource.enum';
 import { ResourceService } from './resource.service';
 import { Player } from '../../player/player';
-import { PlayerService } from '../../player/player.service';
+import { Stage } from '../stage';
 
-export class ResourceStage {
+export class ResourceStage extends Stage {
   resourceRepo: ResourceRepo;
-  playersAbleToBuy: Player[];
-
-  constructor() {
-    this.playersAbleToBuy = PlayerService.getPlayersAscending();
-    this.setPlayersAbleToBuy();
-  }
+  stagePlayers: Player[];
 
   getPrice(resourceName: ResourceEnum, quantity: number): number {
     return ResourceService.getPrice(resourceName, quantity);
@@ -35,30 +30,12 @@ export class ResourceStage {
     player.spend(price);
   }
 
-  setPlayersAbleToBuy(): void {
-    this.playersAbleToBuy = this.playersAbleToBuy.filter(player => {
+  setStagePlayers(): void {
+    this.stagePlayers = this.stagePlayers.filter(player => {
       const resources = (player.stations || []).map(
         station => station.resource
       );
       return resources.some(res => ResourceService.getPrice(res, 1) < player.cash);
     });
-  }
-
-  getCurrentPlayer(): Player {
-    if (this.playersAbleToBuy.length < 1) {
-      throw new Error('ResSt.getCurrentPlayer - Players not exist');
-    }
-    return this.playersAbleToBuy[0];
-  }
-
-  removeCurrentPlayer(): void {
-    if (!this.playersAbleToBuy.length) {
-      throw new Error('ResSt.removeCurrentPlayer - There is no player');
-    }
-    this.playersAbleToBuy = this.playersAbleToBuy.slice(1);
-  }
-
-  isStageFinished(): boolean {
-    return !(this.playersAbleToBuy || []).length;
   }
 }

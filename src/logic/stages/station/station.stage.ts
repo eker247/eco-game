@@ -3,21 +3,24 @@ import { Player } from '../../player/index';
 import { PlayerService } from '../../player/player.service';
 import { Station } from './station';
 import { StationService } from './station.service';
+import { Stage } from '../stage';
 
-export class StationStage {
+export class StationStage extends Stage {
   actualPrice: number;
   actualStation: Station;
   availableStations: Station[];
-  playersAbleToBuy: Player[] = PlayerService.getPlayersDescending();
+  stagePlayers: Player[] = PlayerService.getPlayersDescending();
   playerWithHighestWage: Player;
 
   constructor() {
-    this.setPlayersAbleToBuy();
+    super();
+    this.stagePlayers = PlayerService.getPlayersDescending();
+    this.setStagePlayers();
   }
 
-  setPlayersAbleToBuy(): void {
+  setStagePlayers(): void {
     const lowestStationPrice = StationService.getCheapestStationPrice();
-    this.playersAbleToBuy = this.playersAbleToBuy.filter(
+    this.stagePlayers = this.stagePlayers.filter(
       player => player.cash >= lowestStationPrice
     );
   }
@@ -36,10 +39,10 @@ export class StationStage {
   }
 
   getCurrentPlayer(): Player {
-    if (this.playersAbleToBuy.length < 1) {
+    if (this.stagePlayers.length < 1) {
       throw new Error('There is no players able to buy a station');
     }
-    return this.playersAbleToBuy[0];
+    return this.stagePlayers[0];
   }
 
   getStationsToBuy(): Station[] {
@@ -92,16 +95,16 @@ export class StationStage {
     this.playerWithHighestWage.addStation(this.actualStation);
     this.playerWithHighestWage.spend(this.actualPrice);
     this.removeStation();
-    this.removePlayerAbleToBuy(this.playerWithHighestWage);
+    this.removeCurrentPlayer();
     this.playerWithHighestWage = null;
   }
 
-  removePlayerAbleToBuy(playerToRemove: Player) {
-    if (!playerToRemove) {
+  removeCurrentPlayer() {
+    if (!this.playerWithHighestWage) {
       throw new Error('StatSt.removePlayerAbleToBuy - Player incorrect');
     }
-    this.playersAbleToBuy = this.playersAbleToBuy.filter(
-      player => player.id !== playerToRemove.id
+    this.stagePlayers = this.stagePlayers.filter(
+      player => player.id !== this.playerWithHighestWage.id
     );
   }
 
@@ -112,9 +115,5 @@ export class StationStage {
     StationService.removeStation(this.actualStation.id);
     this.actualStation = null;
     this.actualPrice = 0;
-  }
-
-  isStageFinished(): boolean {
-    return (this.playersAbleToBuy || []).length === 0;
   }
 }

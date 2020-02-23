@@ -1,6 +1,7 @@
 import { House } from '../stages/house/house';
 import { SettingService } from '../setting.service';
 import { Station } from '../stages/station/station';
+import { ResourceBag } from '../stages/resource/resource.enum';
 
 export class Player {
   id: number;
@@ -8,7 +9,7 @@ export class Player {
   cash: number;
   stations: Station[] = [];
   houses: House[] = [];
-  resources = {};
+  resources: ResourceBag = {};
 
   constructor(id: number, name: string, cash = SettingService.STARTING_CASH) {
     this.id = id;

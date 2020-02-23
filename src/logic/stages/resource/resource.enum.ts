@@ -9,4 +9,4 @@ export enum ResourceEnum {
 };
 
 export type ResourceRepo = { [name in ResourceEnum]?: Resource };
-export type ResourceBag = { [name in ResourceEnum]: number };
+export type ResourceBag = { [name in ResourceEnum]?: number };

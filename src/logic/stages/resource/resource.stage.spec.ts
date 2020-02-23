@@ -62,17 +62,17 @@ describe('resource.stage.spec.ts', () => {
     });
   });
 
-  describe('setPlayersAbleToBuy', () => {
+  describe('setStagePlayers', () => {
     it('should set 4 players', () => {
       PlayerService.setOrder();
-      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
-      expect(resourceStage.playersAbleToBuy.length).toEqual(4);
+      resourceStage.stagePlayers = PlayerService.getPlayersAscending();
+      expect(resourceStage.stagePlayers.length).toEqual(4);
     });
 
     it('should set 3 players', () => {
       PlayerService.players[1].cash = 0;
-      resourceStage.setPlayersAbleToBuy()
-      expect(resourceStage.playersAbleToBuy.length).toEqual(3);
+      resourceStage.setStagePlayers()
+      expect(resourceStage.stagePlayers.length).toEqual(3);
     });
   });
 
@@ -85,23 +85,23 @@ describe('resource.stage.spec.ts', () => {
   describe('removeCurrentPlayer', () => {
     beforeEach(function() {
       PlayerService.setOrder();
-      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
+      resourceStage.stagePlayers = PlayerService.getPlayersAscending();
     });
 
     it('should have 4 players', () => {
-      expect(resourceStage.playersAbleToBuy.length).toEqual(4);
+      expect(resourceStage.stagePlayers.length).toEqual(4);
     });
 
     it('should have 3 players', () => {
       resourceStage.removeCurrentPlayer();
-      expect(resourceStage.playersAbleToBuy.length).toEqual(3);
+      expect(resourceStage.stagePlayers.length).toEqual(3);
     });
 
     it('should have 1 player', () => {
       resourceStage.removeCurrentPlayer();
       resourceStage.removeCurrentPlayer();
       resourceStage.removeCurrentPlayer();
-      expect(resourceStage.playersAbleToBuy.length).toEqual(1);
+      expect(resourceStage.stagePlayers.length).toEqual(1);
     });
 
     it('should throw an error', () => {
@@ -116,7 +116,7 @@ describe('resource.stage.spec.ts', () => {
   describe('isStageFinished', () => {
     beforeAll(function() {
       PlayerService.setOrder();
-      resourceStage.playersAbleToBuy = PlayerService.getPlayersAscending();
+      resourceStage.stagePlayers = PlayerService.getPlayersAscending();
     });
 
     it('should should return false', () => {

@@ -16,50 +16,50 @@ describe('house.stage.spec.ts', () => {
     expect(houseStage).toBeTruthy();
   });
 
-  describe('setPlayersAbleToBuy', () => {
+  describe('setStagePlayers', () => {
     it('should set one player', () => {
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = [
+      houseStage.stagePlayers = [
         new Player(1, 'One', 100),
         new Player(2, 'Two', 5),
       ];
-      houseStage.setPlayersAbleToBuy();
-      expect(houseStage.playersAbleToBuy.length).toEqual(1);
+      houseStage.setStagePlayers();
+      expect(houseStage.stagePlayers.length).toEqual(1);
     });
 
     it('should set two player', () => {
       SettingService.LEVEL = 2;
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = [
+      houseStage.stagePlayers = [
         new Player(1, 'One', 100),
         new Player(2, 'Two', 10),
         new Player(3, 'Three', 30),
       ];
-      houseStage.setPlayersAbleToBuy();
-      expect(houseStage.playersAbleToBuy.length).toEqual(2);
+      houseStage.setStagePlayers();
+      expect(houseStage.stagePlayers.length).toEqual(2);
     });
 
     it('should set no player', () => {
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = [];
-      houseStage.setPlayersAbleToBuy();
-      expect(houseStage.playersAbleToBuy.length).toEqual(0);
+      houseStage.stagePlayers = [];
+      houseStage.setStagePlayers();
+      expect(houseStage.stagePlayers.length).toEqual(0);
     });
   });
 
   describe('getCurrentPlayer', () => {
     beforeEach(function() {
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = [
+      houseStage.stagePlayers = [
         new Player(1, 'One'),
         new Player(2, 'Two')
       ];
-      houseStage.setPlayersAbleToBuy();
+      houseStage.setStagePlayers();
     });
 
     it('should return current player', () => {
       const player = houseStage.getCurrentPlayer();
-      expect(player).toEqual(houseStage.playersAbleToBuy[0]);
+      expect(player).toEqual(houseStage.stagePlayers[0]);
     });
 
     it('should throw an error', () => {
@@ -72,17 +72,17 @@ describe('house.stage.spec.ts', () => {
   describe('removeCurrentPlayer', () => {
     beforeEach(function() {
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = [
+      houseStage.stagePlayers = [
         new Player(1, 'One'),
         new Player(2, 'Two')
       ];
-      houseStage.setPlayersAbleToBuy();
+      houseStage.setStagePlayers();
     });
 
     it('should remove player', () => {
-      expect(houseStage.playersAbleToBuy.length).toEqual(2);
+      expect(houseStage.stagePlayers.length).toEqual(2);
       houseStage.removeCurrentPlayer();
-      expect(houseStage.playersAbleToBuy.length).toEqual(1);
+      expect(houseStage.stagePlayers.length).toEqual(1);
     });
 
     it('should throw an error', () => {
@@ -95,7 +95,7 @@ describe('house.stage.spec.ts', () => {
   describe('isStageFinished', () => {
     beforeEach(function() {
       PlayerService.setOrder();
-      houseStage.playersAbleToBuy = PlayerService.getPlayersAscending();
+      houseStage.stagePlayers = PlayerService.getPlayersAscending();
     });
 
     it('should should return false', () => {

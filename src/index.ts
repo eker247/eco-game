@@ -9,7 +9,7 @@ import { StationStage } from "./logic/stages/station";
 //     const currentStations = stationStage.getStationsToBuy();
 //     const nextStations = stationStage.getNextStations();
 //     stationStage.setActualStation(currentStations[0], player, currentStations[0].price);
-//     stationStage.playersAbleToBuy.forEach(currentPlayer => {
+//     stationStage.stagePlayers.forEach(currentPlayer => {
 //       stationStage.outbidAuction(currentPlayer, stationStage.actualPrice + 1);
 //     });
 //   }

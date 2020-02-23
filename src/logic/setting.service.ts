@@ -13,4 +13,6 @@ export class SettingService {
   static HOUSE_EXTRA_PRICE = 5;
   static HOUSE_MAX_OWNERS = 3;
   static HOUSE_PRICE_DIVISOR = 2;
+  static PROFIT_BASE = 12;
+  static PROFIT_EXTRA = 9;
 }

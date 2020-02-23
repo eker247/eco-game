@@ -1,9 +1,9 @@
 // import { Player } from '../../player/player';
 import { Player } from '../../player/index';
 import { PlayerService } from '../../player/player.service';
+import { Stage } from '../stage';
 import { Station } from './station';
 import { StationService } from './station.service';
-import { Stage } from '../stage';
 
 export class StationStage extends Stage {
   actualPrice: number;
@@ -27,7 +27,9 @@ export class StationStage extends Stage {
 
   getMostExpensiveStationPrice(stations: Station[]): number {
     if (!stations) {
-      throw new Error('StatSt.getMostExpensiveStationPrice - Incorrect stations');
+      throw new Error(
+        'StatSt.getMostExpensiveStationPrice - Incorrect stations'
+      );
     }
     let price = 0;
     stations.forEach(station => {
@@ -104,7 +106,7 @@ export class StationStage extends Stage {
       throw new Error('StatSt.removePlayerAbleToBuy - Player incorrect');
     }
     this.stagePlayers = this.stagePlayers.filter(
-      player => player.id !== this.playerWithHighestWage.id
+      player => player !== this.playerWithHighestWage
     );
   }
 

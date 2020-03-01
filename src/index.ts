@@ -7,6 +7,7 @@ import { ResourceEnum } from './logic/stages/resource/resource.enum';
 import { ResourceService } from './logic/stages/resource/resource.service';
 import { ResourceStage } from './logic/stages/resource/resource.stage';
 import { Station, StationService, StationStage } from './logic/stages/station';
+import { SettingService } from './logic/setting.service';
 
 export {
   House,
@@ -17,6 +18,7 @@ export {
   ResourceEnum,
   ResourceService,
   ResourceStage,
+  SettingService,
   Station,
   StationService,
   StationStage,

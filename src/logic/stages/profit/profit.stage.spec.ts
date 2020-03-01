@@ -49,7 +49,46 @@ describe('profit.stage.spec', () => {
       player.resources[ResourceEnum.COAL] = 1;
       expect(() => profitStage.makeProfit(null)).toThrow();
       expect(() => profitStage.makeProfit([station])).toThrow();
-    })
+    });
+  });
 
+  describe('computeProfit', () => {
+    it('should earn 30', () => {
+      SettingService.PROFIT_BASE = 12;
+      SettingService.PROFIT_EXTRA = 9;
+      const station: Station = {
+        id: 1,
+        level: 1,
+        price: 1,
+        name: 'Test Station',
+        resource: ResourceEnum.COAL,
+        resourceConsumption: 3,
+        efficiency: 2,
+      }
+      const player = profitStage.getCurrentPlayer();
+      player.stations = [station];
+      player.resources[ResourceEnum.COAL] = 4;
+      const profit = profitStage.computeProfit([station]);
+      expect(profit).toEqual(30);
+    });
+
+    it('should throw an error', () => {
+      SettingService.PROFIT_BASE = 12;
+      SettingService.PROFIT_EXTRA = 9;
+      const station: Station = {
+        id: 1,
+        level: 1,
+        price: 1,
+        name: 'Test Station',
+        resource: ResourceEnum.COAL,
+        resourceConsumption: 3,
+        efficiency: 2,
+      }
+      const player = profitStage.getCurrentPlayer();
+      player.stations = [station];
+      player.resources[ResourceEnum.COAL] = 1;
+      expect(() => profitStage.computeProfit(null)).toThrow();
+      expect(() => profitStage.computeProfit([station])).toThrow();
+    });
   });
 });

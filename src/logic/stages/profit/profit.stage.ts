@@ -18,6 +18,16 @@ export class ProfitStage extends Stage {
 
   makeProfit(stations: Station[]): number {
     const player = this.getCurrentPlayer();
+    const profit = this.computeProfit(stations);
+    player.cash += profit;
+    stations.forEach(station => {
+      player.resources[station.resource] -= station.resourceConsumption;
+    });
+    return profit;
+  }
+
+  computeProfit(stations: Station[]): number {
+    const player = this.getCurrentPlayer();
     let houseForProfit = 0;
     stations.forEach(station => {
       if (
@@ -37,10 +47,6 @@ export class ProfitStage extends Stage {
     const profit =
       SettingService.PROFIT_BASE +
       effectiveHouses * SettingService.PROFIT_EXTRA;
-    player.cash += profit;
-    stations.forEach(station => {
-      player.resources[station.resource] -= station.resourceConsumption;
-    });
     return profit;
   }
 }

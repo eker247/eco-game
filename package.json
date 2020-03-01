@@ -1,11 +1,16 @@
 {
-  "name": "eco-game",
-  "version": "0.0.1",
+  "name": "ek-eco-game",
+  "version": "0.1.0",
   "description": "Api for new game",
   "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eker247/eco-game"
+  },
   "scripts": {
     "test:watch": "jest --watchAll",
-    "build": "tsc ./index.ts",
+    "build": "tsc",
     "clear": "rimraf ./dist",
     "start:dev": "tsc-watch ./src/index.ts --outDir ./dist --onSuccess \"node ./dist/index.js\""
   },
@@ -19,6 +24,9 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
+    "browserify": "latest",
+    "@types/browserify": "latest",
+    "typescript": "next",
     "rimraf": "^3.0.1",
     "tsc-watch": "^4.1.0"
   }

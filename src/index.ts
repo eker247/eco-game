@@ -8,11 +8,14 @@ import { ResourceService } from './logic/stages/resource/resource.service';
 import { ResourceStage } from './logic/stages/resource/resource.stage';
 import { Station, StationService, StationStage } from './logic/stages/station';
 import { SettingService } from './logic/setting.service';
+import { Player, PlayerService } from './logic/player';
 
 export {
   House,
   HouseService,
   HouseStage,
+  Player,
+  PlayerService,
   ProfitStage,
   Resource,
   ResourceEnum,

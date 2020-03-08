@@ -1,6 +1,6 @@
 {
   "name": "ek-eco-game",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Api for new game",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

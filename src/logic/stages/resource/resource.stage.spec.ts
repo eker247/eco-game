@@ -82,7 +82,7 @@ describe('resource.stage.spec.ts', () => {
     });
   });
 
-  describe('removeCurrentPlayer', () => {
+  describe('removePlayer', () => {
     beforeEach(function() {
       PlayerService.setOrder();
       resourceStage.stagePlayers = PlayerService.getPlayersAscending();
@@ -93,23 +93,23 @@ describe('resource.stage.spec.ts', () => {
     });
 
     it('should have 3 players', () => {
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.stagePlayers.length).toEqual(3);
     });
 
     it('should have 1 player', () => {
-      resourceStage.removeCurrentPlayer();
-      resourceStage.removeCurrentPlayer();
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
+      resourceStage.removePlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.stagePlayers.length).toEqual(1);
     });
 
     it('should throw an error', () => {
-      resourceStage.removeCurrentPlayer();
-      resourceStage.removeCurrentPlayer();
-      resourceStage.removeCurrentPlayer();
-      resourceStage.removeCurrentPlayer();
-      expect(() => resourceStage.removeCurrentPlayer()).toThrow();
+      resourceStage.removePlayer();
+      resourceStage.removePlayer();
+      resourceStage.removePlayer();
+      resourceStage.removePlayer();
+      expect(() => resourceStage.removePlayer()).toThrow();
     });
   });
 
@@ -121,16 +121,16 @@ describe('resource.stage.spec.ts', () => {
 
     it('should should return false', () => {
       expect(resourceStage.isStageFinished()).toBeFalsy();
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.isStageFinished()).toBeFalsy();
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.isStageFinished()).toBeFalsy();
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.isStageFinished()).toBeFalsy();
     });
 
     it('should should return true', () => {
-      resourceStage.removeCurrentPlayer();
+      resourceStage.removePlayer();
       expect(resourceStage.isStageFinished()).toBeTruthy();
     });
   });

@@ -175,14 +175,15 @@ describe('station.stage.spec.ts', () => {
 
   describe('removePlayerAbleToBuy', () => {
     it('should remove player from array', () => {
-      stage.playerWithHighestWage = stage.stagePlayers[1];
+      const player = stage.stagePlayers[1];
       const lengthBeforeRemove = stage.stagePlayers.length;
-      stage.removeCurrentPlayer();
+      stage.removePlayer(player);
       expect(stage.stagePlayers.length).toEqual(lengthBeforeRemove - 1);
     });
 
     it('should throw an error', () => {
-      expect(() => stage.removeCurrentPlayer()).toThrow();
+      stage.stagePlayers = [];
+      expect(() => stage.removePlayer()).toThrow();
     });
   });
 

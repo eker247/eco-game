@@ -97,17 +97,8 @@ export class StationStage extends Stage {
     this.playerWithHighestWage.addStation(this.actualStation);
     this.playerWithHighestWage.spend(this.actualPrice);
     this.removeStation();
-    this.removeCurrentPlayer();
+    this.removePlayer(this.playerWithHighestWage);
     this.playerWithHighestWage = null;
-  }
-
-  removeCurrentPlayer() {
-    if (!this.playerWithHighestWage) {
-      throw new Error('StatSt.removePlayerAbleToBuy - Player incorrect');
-    }
-    this.stagePlayers = this.stagePlayers.filter(
-      player => player !== this.playerWithHighestWage
-    );
   }
 
   removeStation(): void {

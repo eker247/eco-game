@@ -12,9 +12,9 @@ var Stage = /** @class */ (function () {
         }
         return this.stagePlayers[0];
     };
-    Stage.prototype.removeCurrentPlayer = function () {
+    Stage.prototype.removePlayer = function () {
         if (!this.stagePlayers.length) {
-            throw new Error('Stage.removeCurrentPlayer - There is no player');
+            throw new Error('Stage.removePlayer - There is no player');
         }
         this.stagePlayers = this.stagePlayers.slice(1);
     };

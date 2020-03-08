@@ -63,13 +63,13 @@ describe('house.stage.spec.ts', () => {
     });
 
     it('should throw an error', () => {
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
       expect(() => houseStage.getCurrentPlayer()).toThrow();
     });
   });
 
-  describe('removeCurrentPlayer', () => {
+  describe('removePlayer', () => {
     beforeEach(function() {
       PlayerService.setOrder();
       houseStage.stagePlayers = [
@@ -81,14 +81,14 @@ describe('house.stage.spec.ts', () => {
 
     it('should remove player', () => {
       expect(houseStage.stagePlayers.length).toEqual(2);
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
       expect(houseStage.stagePlayers.length).toEqual(1);
     });
 
     it('should throw an error', () => {
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      expect(() => houseStage.removeCurrentPlayer()).toThrow();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      expect(() => houseStage.removePlayer()).toThrow();
     });
   });
 
@@ -100,28 +100,28 @@ describe('house.stage.spec.ts', () => {
 
     it('should should return false', () => {
       expect(houseStage.isStageFinished()).toBeFalsy();
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
       expect(houseStage.isStageFinished()).toBeFalsy();
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
       expect(houseStage.isStageFinished()).toBeFalsy();
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
       expect(houseStage.isStageFinished()).toBeFalsy();
     });
 
     it('should should return true', () => {
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
       expect(houseStage.isStageFinished()).toBeTruthy();
     });
 
     it('should throw an error', () => {
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      houseStage.removeCurrentPlayer();
-      expect(() => houseStage.removeCurrentPlayer()).toThrow();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      houseStage.removePlayer();
+      expect(() => houseStage.removePlayer()).toThrow();
     });
   });
 });
